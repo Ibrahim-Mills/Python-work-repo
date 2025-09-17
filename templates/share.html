@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Note - Studycore</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .sidebar-header h1 {
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-nav a {
+            display: block;
+            padding: 12px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .sidebar-nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .sidebar-nav a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            max-width: 600px;
+        }
+        
+        .share-header {
+            margin-bottom: 30px;
+        }
+        
+        .share-header h1 {
+            color: #333;
+            font-size: 2rem;
+        }
+        
+        .share-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .share-card h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .success-section, .warning-section {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .success-icon, .warning-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .success-icon {
+            color: #28a745;
+        }
+        
+        .warning-icon {
+            color: #ffc107;
+        }
+        
+        .share-link-container {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .share-link {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            background: #f8f9fa;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .share-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .warning-text {
+            color: #dc3545;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1><i class="fas fa-book"></i> Studycore</h1>
+        </div>
+        
+        <ul class="sidebar-nav">
+            <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="{{ url_for('list_notes') }}"><i class="fas fa-sticky-note"></i> Notes</a></li>
+            <li><a href="{{ url_for('list_notebooks') }}"><i class="fas fa-book"></i> Notebooks</a></li>
+            <li><a href="{{ url_for('settings') }}"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <div class="share-header">
+            <h1>Share Note</h1>
+            <a href="{{ url_for('view_note', note_id=note.id) }}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Note
+            </a>
+        </div>
+        
+        <div class="share-card">
+            <h2>{{ note.title }}</h2>
+            
+            {% if share_url %}
+            <div class="success-section">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Note shared successfully!</h3>
+                <p>Your note is now publicly accessible. Anyone with the link can view it.</p>
+                
+                <div class="share-link-container">
+                    <input type="text" value="{{ share_url }}" id="shareLink" readonly class="share-link">
+                    <button onclick="copyShareLink()" class="btn btn-primary">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+                
+                <div class="share-actions">
+                    <a href="{{ share_url }}" target="_blank" class="btn btn-success">
+                        <i class="fas fa-external-link-alt"></i> Open Shared Note
+                    </a>
+                    <form method="POST" action="{{ url_for('share_note', note_id=note.id) }}" style="display: inline;">
+                        <input type="hidden" name="make_private" value="true">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-lock"></i> Make Private
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <div class="warning-section">
+                <div class="warning-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Share this note</h3>
+                <p>This note is currently private. Click the button below to generate a public shareable link.</p>
+                <p class="warning-text">Warning: Anyone with the link will be able to view this note.</p>
+                
+                <form method="POST">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-share"></i> Generate Share Link
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+    function copyShareLink() {
+        const shareLink = document.getElementById('shareLink');
+        shareLink.select();
+        shareLink.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+        
+        const button = event.target;
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        button.disabled = true;
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }, 2000);
+    }
+    </script>
+</body>
+</html>

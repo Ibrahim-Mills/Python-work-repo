@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Notebook - Studycore</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .sidebar-header h1 {
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-nav a {
+            display: block;
+            padding: 12px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .sidebar-nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .sidebar-nav a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            max-width: 600px;
+        }
+        
+        .form-header {
+            margin-bottom: 30px;
+        }
+        
+        .form-header h1 {
+            color: #333;
+            font-size: 2rem;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1><i class="fas fa-book"></i> Studycore</h1>
+        </div>
+        
+        <ul class="sidebar-nav">
+            <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="{{ url_for('list_notes') }}"><i class="fas fa-sticky-note"></i> Notes</a></li>
+            <li><a href="{{ url_for('list_notebooks') }}"><i class="fas fa-book"></i> Notebooks</a></li>
+            <li><a href="{{ url_for('settings') }}"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <div class="form-header">
+            <h1>Edit Notebook</h1>
+            <a href="{{ url_for('list_notebooks') }}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Notebooks
+            </a>
+        </div>
+        
+        <form method="POST" class="form-card">
+            <div class="form-group">
+                <label for="title">Notebook Title</label>
+                <input type="text" id="title" name="title" value="{{ notebook.title }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Describe what this notebook is about">{{ notebook.description or '' }}</textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Notebook
+                </button>
+                <a href="{{ url_for('list_notebooks') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

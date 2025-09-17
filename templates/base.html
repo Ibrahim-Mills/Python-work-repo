@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Studycoore{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body data-theme="{{ session.get('theme', 'light') }}">
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="fas fa-book"></i> Studycoore</h1>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('dashboard') }}" {% if request.endpoint == 'dashboard' %}class="active"{% endif %}><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="{{ url_for('list_notes') }}" {% if request.endpoint == 'list_notes' %}class="active"{% endif %}><i class="fas fa-sticky-note"></i> Notes</a></li>
+                <li><a href="{{ url_for('list_notebooks') }}" {% if request.endpoint == 'list_notebooks' %}class="active"{% endif %}><i class="fas fa-book"></i> Notebooks</a></li>
+                <li><a href="{{ url_for('settings') }}" {% if request.endpoint == 'settings' %}class="active"{% endif %}><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="{{ url_for('profile') }}" {% if request.endpoint == 'profile' %}class="active"{% endif %}><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <i class="fas fa-{% if category == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

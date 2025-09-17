@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Studycore</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .sidebar-header h1 {
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-nav a {
+            display: block;
+            padding: 12px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .sidebar-nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .sidebar-nav a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            max-width: 800px;
+        }
+        
+        .profile-header {
+            margin-bottom: 30px;
+        }
+        
+        .profile-header h1 {
+            color: #333;
+            font-size: 2rem;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .avatar-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .avatar-placeholder {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            margin: 0 auto 15px;
+            border: 4px solid #667eea;
+        }
+        
+        .avatar-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .stats-card h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            display: block;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1><i class="fas fa-book"></i> Studycore</h1>
+        </div>
+        
+        <ul class="sidebar-nav">
+            <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="{{ url_for('list_notes') }}"><i class="fas fa-sticky-note"></i> Notes</a></li>
+            <li><a href="{{ url_for('list_notebooks') }}"><i class="fas fa-book"></i> Notebooks</a></li>
+            <li><a href="{{ url_for('settings') }}"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <div class="profile-header">
+            <h1>Your Profile</h1>
+        </div>
+        
+        <div class="profile-card">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="avatar-section">
+                    {% if current_user.profile_pic %}
+                    <img src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_pic) }}" alt="Profile" class="avatar" id="avatarPreview">
+                    {% else %}
+                    <div class="avatar-placeholder" id="avatarPreview">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="avatar-actions">
+                        <label for="profile_pic" class="btn btn-secondary">
+                            <i class="fas fa-camera"></i> Change Photo
+                        </label>
+                        <input type="file" id="profile_pic" name="profile_pic" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                        {% if current_user.profile_pic %}
+                        <button type="button" class="btn btn-danger" onclick="removeProfilePic()">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" value="{{ current_user.name }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" value="{{ current_user.email }}" disabled>
+                    <small style="color: #666; font-size: 0.9rem;">Email cannot be changed</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" name="bio" placeholder="Tell us about yourself">{{ current_user.bio or '' }}</textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="stats-card">
+            <h2>Your Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <span class="stat-number">{{ current_user.notebooks|length }}</span>
+                    <span class="stat-label">Notebooks</span>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-sticky-note"></i>
+                    </div>
+                    <span class="stat-number">{{ current_user.notes|length }}</span>
+                    <span class="stat-label">Notes</span>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <span class="stat-number">{{ current_user.created_at.strftime('%b %Y') }}</span>
+                    <span class="stat-label">Member Since</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('avatarPreview');
+                if (preview.tagName === 'IMG') {
+                    preview.src = e.target.result;
+                } else {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'avatar';
+                    img.id = 'avatarPreview';
+                    img.alt = 'Profile Picture';
+                    preview.parentNode.replaceChild(img, preview);
+                }
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    function removeProfilePic() {
+        if (confirm('Are you sure you want to remove your profile picture?')) {
+            fetch('/profile/remove-pic', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const preview = document.getElementById('avatarPreview');
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'avatar-placeholder';
+                    placeholder.id = 'avatarPreview';
+                    placeholder.innerHTML = '<i class="fas fa-user"></i>';
+                    preview.parentNode.replaceChild(placeholder, preview);
+                    
+                    const removeBtn = document.querySelector('button[onclick="removeProfilePic()"]');
+                    if (removeBtn) {
+                        removeBtn.remove();
+                    }
+                    
+                    alert('Profile picture removed successfully!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error removing profile picture');
+            });
+        }
+    }
+    </script>
+</body>
+</html>

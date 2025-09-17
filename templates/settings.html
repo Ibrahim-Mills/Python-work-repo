@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Studycoore{% endblock %}
+
+{% block extra_css %}
+<style>
+    .settings-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+    
+    .settings-header {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .settings-header h1 {
+        color: var(--text-primary);
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .settings-header p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+    }
+    
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .settings-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+    }
+    
+    .settings-card:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    
+    .settings-card h2 {
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--accent-color);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .settings-card h2 i {
+        color: var(--accent-color);
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    
+    .form-group .form-help {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+    }
+    
+    .theme-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .theme-option {
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+    
+    .theme-option:hover {
+        border-color: var(--accent-color);
+        transform: translateY(-2px);
+    }
+    
+    .theme-option.selected {
+        border-color: var(--accent-color);
+        background: var(--accent-color);
+        color: white;
+    }
+    
+    .theme-option.selected i,
+    .theme-option.selected .theme-name,
+    .theme-option.selected .theme-desc {
+        color: white;
+    }
+    
+    .theme-option i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        display: block;
+        color: var(--text-primary);
+    }
+    
+    .theme-option .theme-name {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--text-primary);
+    }
+    
+    .theme-option .theme-desc {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--accent-color);
+    }
+    
+    .checkbox-group label {
+        margin: 0;
+        font-weight: normal;
+        cursor: pointer;
+        color: var(--text-primary);
+    }
+    
+    .range-slider {
+        width: 100%;
+        margin: 1rem 0;
+        accent-color: var(--accent-color);
+    }
+    
+    .range-value {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background: var(--accent-color);
+        color: white;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-left: 1rem;
+    }
+    
+    .settings-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .preview-theme {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+    
+    .preview-sample {
+        flex: 1;
+        padding: 1rem;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+    }
+    
+    .preview-sample h4 {
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .preview-sample p {
+        color: var(--text-secondary);
+        margin: 0;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-primary {
+        background: var(--accent-color);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: var(--secondary-color);
+        transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+    }
+    
+    .btn-secondary:hover {
+        background: var(--border-color);
+        transform: translateY(-2px);
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+    
+    @media (max-width: 768px) {
+        .theme-options {
+            grid-template-columns: 1fr;
+        }
+        
+        .settings-actions {
+            flex-direction: column;
+        }
+        
+        .settings-card {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <div class="settings-header">
+        <h1><i class="fas fa-cog"></i> Settings</h1>
+        <p>Customize your Studycoore experience</p>
+    </div>
+
+    <form method="POST" class="settings-grid">
+        <!-- Appearance Settings -->
+        <div class="settings-card">
+            <h2><i class="fas fa-palette"></i> Appearance</h2>
+            
+            <div class="form-group">
+                <label>Theme Preference</label>
+                <div class="theme-options">
+                    <div class="theme-option {% if current_user.theme_preference == 'light' %}selected{% endif %}" onclick="selectTheme('light')">
+                        <i class="fas fa-sun"></i>
+                        <div class="theme-name">Light</div>
+                        <div class="theme-desc">Bright and clean</div>
+                        <input type="radio" name="theme_preference" value="light" {% if current_user.theme_preference == 'light' %}checked{% endif %} style="display: none;">
+                    </div>
+                    
+                    <div class="theme-option {% if current_user.theme_preference == 'dark' %}selected{% endif %}" onclick="selectTheme('dark')">
+                        <i class="fas fa-moon"></i>
+                        <div class="theme-name">Dark</div>
+                        <div class="theme-desc">Easy on the eyes</div>
+                        <input type="radio" name="theme_preference" value="dark" {% if current_user.theme_preference == 'dark' %}checked{% endif %} style="display: none;">
+                    </div>
+                    
+                    <div class="theme-option {% if current_user.theme_preference == 'system' or not current_user.theme_preference %}selected{% endif %}" onclick="selectTheme('system')">
+                        <i class="fas fa-desktop"></i>
+                        <div class="theme-name">System</div>
+                        <div class="theme-desc">Follows your OS</div>
+                        <input type="radio" name="theme_preference" value="system" {% if current_user.theme_preference == 'system' or not current_user.theme_preference %}checked{% endif %} style="display: none;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-theme">
+                <div class="preview-sample">
+                    <h4>Sample Text</h4>
+                    <p>This is how your notes will appear with the selected theme.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="settings-card">
+            <h2><i class="fas fa-bell"></i> Notifications</h2>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="email_notifications" name="email_notifications" {% if current_user.email_notifications %}checked{% endif %}>
+                <label for="email_notifications">Email notifications</label>
+            </div>
+            <div class="form-help">Receive email updates about your notes and activity</div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="auto_save" name="auto_save" {% if current_user.auto_save %}checked{% endif %}>
+                <label for="auto_save">Auto-save notes</label>
+            </div>
+            <div class="form-help">Automatically save changes while editing notes</div>
+        </div>
+
+        <!-- AI & Display Settings -->
+        <div class="settings-card">
+            <h2><i class="fas fa-robot"></i> AI & Display</h2>
+            
+            <div class="form-group">
+                <label for="summary_length">AI Summary Length</label>
+                <input type="range" id="summary_length" name="summary_length" min="50" max="300" step="50" 
+                       value="{{ current_user.summary_length or 150 }}" class="range-slider"
+                       oninput="updateRangeValue('summary_length', 'summary_length_value')">
+                <span id="summary_length_value" class="range-value">{{ current_user.summary_length or 150 }} words</span>
+                <div class="form-help">Number of words for AI-generated summaries</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="items_per_page">Items Per Page</label>
+                <select id="items_per_page" name="items_per_page" class="form-control">
+                    <option value="5" {% if current_user.items_per_page == 5 %}selected{% endif %}>5 items</option>
+                    <option value="10" {% if current_user.items_per_page == 10 or not current_user.items_per_page %}selected{% endif %}>10 items</option>
+                    <option value="20" {% if current_user.items_per_page == 20 %}selected{% endif %}>20 items</option>
+                    <option value="50" {% if current_user.items_per_page == 50 %}selected{% endif %}>50 items</option>
+                </select>
+                <div class="form-help">Number of notes/notebooks to show per page</div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="settings-actions">
+            <button type="button" class="btn btn-secondary" onclick="resetToDefaults()">
+                <i class="fas fa-undo"></i> Reset to Defaults
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save Settings
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function selectTheme(theme) {
+    document.querySelectorAll('.theme-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    const selectedOption = document.querySelector(`.theme-option[onclick="selectTheme('${theme}')"]`);
+    if (selectedOption) {
+        selectedOption.classList.add('selected');
+    }
+    document.querySelectorAll('input[name="theme_preference"]').forEach(radio => {
+        radio.checked = (radio.value === theme);
+    });
+    // Save to localStorage for persistence across all pages
+    localStorage.setItem('theme', theme);
+    // For preview only (optional)
+    if (theme === 'system') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    } else {
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Select current theme visually
+    const currentTheme = localStorage.getItem('theme') || '{{ current_user.theme_preference or "system" }}';
+    selectTheme(currentTheme);
+
+    // When the form is submitted, the theme is already saved in localStorage
+});
+</script>
+{% endblock %}
